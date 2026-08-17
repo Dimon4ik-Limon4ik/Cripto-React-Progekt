@@ -1,0 +1,18 @@
+.heroContent {
+  text-align: center;
+}
+
+.Cursor {
+  font-weight: 300;
+  animation: blink 0.8s step-end infinite;
+}
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 0;
+  }
+  50.01%,
+  100% {
+    opacity: 1;
+  }
+}

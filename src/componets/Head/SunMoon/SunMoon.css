@@ -1,0 +1,58 @@
+.btnSunMoon {
+  position: relative;
+  padding: 0 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  width: 70px;
+  height: 40px;
+  border-radius: 40px;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  transition:
+    background 0.4s ease,
+    border-color 0.4s ease;
+}
+
+.btnSunMoon.dark {
+  border: 1px solid rgba(230, 223, 204, 0);
+  box-shadow:
+    2px 5px 6px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+.selectSunMoon {
+  position: absolute;
+  height: calc(100% - 6px);
+  top: 3px;
+  width: 30px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  transition:
+    left 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.4s ease;
+}
+
+.selectSunMoon.state-sun {
+  left: 5px;
+  background: rgba(252, 248, 235, 0.4); /* кремовый оттенок дня */
+}
+
+.selectSunMoon.state-dark {
+  left: 32px;
+  /* background: rgba(230, 223, 204, 0.25); алебастровый оттенок ночи */
+}

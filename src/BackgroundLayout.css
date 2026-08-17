@@ -1,0 +1,10 @@
+.backgroundLayout {
+  width: 100%;
+  min-height: 100vh;
+  padding: 30px 10px;
+  background: #fcf8eb;
+  transition: all 1s ease;
+}
+.backgroundLayoutDark {
+  background-color: #1e293b;
+}

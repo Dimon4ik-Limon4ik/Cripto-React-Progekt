@@ -1,0 +1,73 @@
+import "./HomePage.css";
+import TypeWriterText from "./TypeWriterText/TypeWriterText.jsx";
+import CriptoCard from "./CriptoCard/CriptoCard.jsx";
+import { CriptoContext } from "./../../Context/CriptoContext.js";
+import { ThemeContext } from "./../../Context/SunMoonContext.js";
+import { useContext, useState } from "react";
+
+
+export default function HomePage() {
+  let CryptaCardArray = [];
+  const crypta = useContext(CriptoContext);
+  const { theme } = useContext(ThemeContext);
+  const [SearchValue, setSearchValue] = useState("");
+
+  if (SearchValue === "") {
+    CryptaCardArray = crypta.map((coin) => {
+      return (
+        <CriptoCard
+          key={coin.id}
+          CryptaImg={coin?.image}
+          CryptaName={coin?.name}
+          CryptaPrace={coin?.current_price}
+          CryptaHeightСhange={coin?.price_change_percentage_24h}
+        />
+      );
+    });
+  } else {
+    CryptaCardArray = crypta.map((coin) => {
+      if (coin.name.toLowerCase().startsWith(SearchValue.toLowerCase())) {
+        return (
+          <CriptoCard
+            key={coin.id}
+            CryptaImg={coin?.image}
+            CryptaName={coin?.name}
+            CryptaPrace={coin?.current_price}
+            CryptaHeightСhange={coin?.price_change_percentage_24h}
+          />
+        );
+      }
+    });
+  }
+
+  if (!crypta || crypta.length === 0) {
+    return (
+      <div className={theme === true ? "Conten " : "Conten Conten-dark"}>
+        <div className="Cripta">
+          <TypeWriterText />
+          <input type="text" className="CriptoSearch" />
+          <div className="pageConten">
+            <p>Загрузка...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={theme === true ? "Conten " : "Conten Conten-dark"}>
+      <div className="Cripta">
+        <TypeWriterText />
+        <input
+          type="text"
+          value={SearchValue}
+          onChange={(e) => {
+            setSearchValue(e.target.value);
+          }}
+          className="CriptoSearch"
+        />
+        <div className="pageConten">{CryptaCardArray}</div>
+      </div>
+    </div>
+  );
+}
