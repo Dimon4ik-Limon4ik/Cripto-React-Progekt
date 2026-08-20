@@ -38,7 +38,12 @@ export default function BackgroundLayout() {
           <Routes>
             <Route path="/Home" element={<HomePage />} />
             <Route path="/portfolio" element={<h1>Здесь типо портфель</h1>} />
-            <Route path="/profile" element={<h1>Здесь профиль</h1>} />
+            <Route
+              path="/profile"
+              element={
+               <h1>Профиль</h1>
+              }
+            />
           </Routes>
         </div>
       </ThemeContext.Provider>

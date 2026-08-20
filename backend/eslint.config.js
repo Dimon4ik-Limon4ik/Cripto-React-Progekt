@@ -1,0 +1,3 @@
+languageOptions: {
+  node: true
+}

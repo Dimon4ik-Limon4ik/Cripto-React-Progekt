@@ -2,6 +2,7 @@
 import "./CriptoCard.css";
 import { useContext } from "react";
 import { ThemeContext } from "./../../../Context/SunMoonContext.js";
+import Star from "./Star.jsx";
 
 export default function CriptoCard({
   CryptaImg,
@@ -29,6 +30,7 @@ export default function CriptoCard({
           {CryptaHeightСhange}%
         </span>
       </p>
+      <Star/>
     </div>
   );
 }
