@@ -1,12 +1,13 @@
 // BackgroundLayout.jsx
 import { useEffect, useState } from "react";
 import Head from "./componets/Head/Head.jsx";
+import HomePage from "./componets/HomePage/HomePage.jsx";
+import Authorization from "./componets/Authorization/Authorization.jsx"
 import { ThemeContext } from "./Context/SunMoonContext.js";
 import "./BackgroundLayout.css";
-import HomePage from "./componets/HomePage/HomePage.jsx";
 import { getCryptoMarkets } from "./Services/Services.js";
 import { CriptoContext } from "./Context/CriptoContext.js";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route,Navigate } from "react-router-dom";
 
 export default function BackgroundLayout() {
   const [arrayOfCryptocurrencies, setArrayOfCryptocurrencies] = useState([]);
@@ -34,16 +35,19 @@ export default function BackgroundLayout() {
               : "backgroundLayout backgroundLayoutDark"
           }
         >
-          <Head />
+       
+          
           <Routes>
-            <Route path="/Home" element={<HomePage />} />
-            <Route path="/portfolio" element={<h1>Здесь типо портфель</h1>} />
+            <Route path="/" element={<Navigate to="/Home" replace />} />
+            <Route path="/Home" element={<><Head /> <HomePage /></> } />
+            <Route path="/portfolio" element={<><Head /> <h1>Здесь типо портфель</h1></>} />
             <Route
               path="/profile"
-              element={
-               <h1>Профиль</h1>
+              element={<><Head />
+               <h1>Профиль</h1></>
               }
             />
+            <Route path="/authorization" element={<Authorization/>}/>
           </Routes>
         </div>
       </ThemeContext.Provider>

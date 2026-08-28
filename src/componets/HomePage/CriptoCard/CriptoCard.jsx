@@ -19,9 +19,9 @@ export default function CriptoCard({
       <img src={CryptaImg} className="ImgCriptoCard" alt="..." />
       <h2   style={CryptaName.length > 20 ? { fontSize: "14px" } : CryptaName.length > 30 ? { fontSize: "10px" } : {}} className="TextCriptoCard">{CryptaName}</h2>
       <p className="CardLabel">Цена</p>
-      <p className="CardPrice">{CryptaPrace}$</p>
+      <h1 className="CardPrice">{CryptaPrace}$</h1>
       <p className="CardLabel">За 24 часа</p>
-      <p className="CardChange">
+      <h1 className="CardChange">
         <span
           className={
             CryptaHeightСhange < 0 ? "CryptoСurrencyСrashes" : "CryptoGrowth"
@@ -29,7 +29,7 @@ export default function CriptoCard({
         >
           {CryptaHeightСhange}%
         </span>
-      </p>
+      </h1>
       <Star/>
     </div>
   );

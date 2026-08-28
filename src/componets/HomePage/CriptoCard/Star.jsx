@@ -1,11 +1,13 @@
-import "./Star.css"
-import star from "./../../../componets/Head/Picture/Star.svg"
-
+import { useState } from "react";
+import "./Star.css";
 export default function Star() {
-
-return(
-<img className="chosen" src={star} alt="" />
-
-)
-
+  const [stateStar, setActiveStar] = useState(false);
+  return (
+    <span
+      className={stateStar ? "star starActive" : "star"}
+      onClick={() =>{setActiveStar(!stateStar)} }
+    >
+      star
+    </span>
+  );
 }

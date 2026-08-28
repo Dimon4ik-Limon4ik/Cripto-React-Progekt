@@ -15,12 +15,13 @@ export default function Head() {
 
   const navigate = useNavigate();
   const location = useLocation();
-
+  useEffect(()=>{navigate("/Home")},[])
   useEffect(() => {
     const path = location.pathname;
     if (path === "/Home") setSelectNumberPage(0);
     else if (path === "/portfolio") setSelectNumberPage(1);
     else if (path === "/profile") setSelectNumberPage(2);
+    else if (path === "/authorization") setSelectNumberPage(3);
     else {
       setSelectNumberPage(0);
     }
@@ -66,7 +67,7 @@ export default function Head() {
         ></div>
       </ul>
       <SunMoon />
-      <button className={`btnNav outBtn ${theme ? "" : "outBtn-Dark"}`}>
+      <button className={`btnNav outBtn ${theme ? "" : "outBtn-Dark"}`} onClick={() => handleNavigate(3, "/authorization")} >
         <img className="imageNav" src={Out} alt="Out Profile" />
       </button>
     </nav>

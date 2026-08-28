@@ -1,0 +1,113 @@
+.LoginPanel {
+  width: 400px;
+  height: 450px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+.labelReg {
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+.inputRegister {
+  box-sizing: border-box;
+  border: none;
+  background: none;
+  outline: none;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  width: 280px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-size: 16px;
+  display: block;
+  transition: all 0.3s ease;
+}
+.wrapperBtn-1d12 {
+  width: 280px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+.SelectRegAndIn {
+  display: flex;
+  justify-content: space-between;
+  width: 170px;
+  padding: 5px 10px;
+  background: rga(255, 255, 255, 0.12);
+  border-radius: 100px;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+.btn-1f2 {
+  padding: 1px 5px;
+  background: none;
+  border: none;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+.btn-1f2:hover {
+  border-radius: 10px;
+  padding: 1px 5px;
+  font-size: 14px;
+  background-color: rgba(154, 154, 154, 0.2);
+}
+.activeBttn {
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+.buttonIn {
+  width: 80px;
+  height: 30px;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 5px 6px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
+}
+.effect:hover {
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+.effectFocus:focus {
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
