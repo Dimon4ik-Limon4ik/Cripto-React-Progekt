@@ -14,9 +14,9 @@ export default function validateRegister(req, res, next) {
 
   const name = data.name.trim();
   const login = data.login.trim();
-  // Email приводим к нижнему регистру: UNIQUE в users тогда отсекает
-  // регистровые дубликаты, а вход идёт по логину и не меняется.
-  const email = data.email.trim().toLowerCase();
+  // Email сохраняем как ввёл пользователь; регистронезависимую проверку
+  // дубликатов делает контроллер регистрации отдельным запросом.
+  const email = data.email.trim();
 
   if (name.length < 2 || name.length > 50) {
     return res
