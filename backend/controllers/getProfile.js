@@ -22,7 +22,7 @@ export default async function getProfile(req, res) {
       },
     });
   } catch (error) {
-    console.error("Ошибка загрузки профиля:", error);
+    console.error("Ошибка загрузки профиля:", error.code ?? error.message);
     return res
       .status(500)
       .json({ error: "Не удалось загрузить данные профиля" });

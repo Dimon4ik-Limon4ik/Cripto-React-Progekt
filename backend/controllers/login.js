@@ -22,7 +22,7 @@ export default async function loginUser(req, res) {
       token,
     });
   } catch (error) {
-    console.error("Ошибка входа:", error);
+    console.error("Ошибка входа:", error.code ?? error.message);
     return res.status(500).json({ error: "Не удалось выполнить вход" });
   }
 }

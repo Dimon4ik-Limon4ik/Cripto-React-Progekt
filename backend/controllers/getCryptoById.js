@@ -1,34 +1,29 @@
+import { coinGeckoGet, INVALID_FORMAT_ERROR } from "../services/coinGecko.js";
+
+const COIN_ID_MAX_LENGTH = 100;
+
 // Серверный запрос к CoinGecko API: данные одной монеты (ключ защищён на сервере)
 export default async function getCryptoById(req, res) {
-  try {
-    const coinId = String(req.params.coinId || "").trim();
+  const coinId = String(req.params.coinId || "").trim();
 
-    if (!coinId) {
-      return res.status(400).json({ error: "Не указан идентификатор монеты" });
-    }
-
-    const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${encodeURIComponent(
-      coinId,
-    )}&x_cg_demo_api_key=${process.env.COINGECKO_API_KEY}`;
-
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      return res.status(response.status).json({
-        error: `Ошибка CoinGecko API: HTTP ${response.status}`,
-      });
-    }
-
-    const data = await response.json();
-
-    if (!Array.isArray(data)) {
-      return res.status(502).json({ error: "Некорректный формат данных от CoinGecko" });
-    }
-
-    // Неизвестная монета — это не ошибка сервера, вернём null.
-    res.json(data[0] ?? null);
-  } catch (err) {
-    console.error("Ошибка запроса к CoinGecko:", err);
-    res.status(502).json({ error: "Не удалось получить данные от CoinGecko" });
+  // Тот же лимит, что в validateFavoriteCoin.js: без него мусорные
+  // идентификаторы уходят во внешний API.
+  if (!coinId || coinId.length > COIN_ID_MAX_LENGTH) {
+    return res.status(400).json({ error: "Некорректный идентификатор монеты" });
   }
+
+  const result = await coinGeckoGet(
+    `/coins/markets?vs_currency=usd&ids=${encodeURIComponent(coinId)}`,
+  );
+
+  if (result.error) {
+    return res.status(result.status).json({ error: result.error });
+  }
+
+  if (!Array.isArray(result.data)) {
+    return res.status(502).json({ error: INVALID_FORMAT_ERROR });
+  }
+
+  // Неизвестная монета — это не ошибка сервера, вернём null.
+  res.json(result.data[0] ?? null);
 }

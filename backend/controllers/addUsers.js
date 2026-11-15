@@ -20,7 +20,8 @@ export default async function registerUser(req, res) {
         .json({ error: "Пользователь с таким логином или email уже существует" });
     }
 
-    console.error("Ошибка регистрации:", err);
+    // Только код/сообщение: объект ошибки содержит email и текст SQL.
+    console.error("Ошибка регистрации:", err.code ?? err.message);
     return res.status(500).json({ error: "Не удалось создать аккаунт" });
   }
 }

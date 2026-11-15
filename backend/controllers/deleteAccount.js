@@ -27,7 +27,7 @@ export default async function deleteAccount(req, res) {
 
     return res.status(200).json({ message: "Аккаунт удалён" });
   } catch (error) {
-    console.error("Ошибка удаления аккаунта:", error);
+    console.error("Ошибка удаления аккаунта:", error.code ?? error.message);
     return res.status(500).json({ error: "Не удалось удалить аккаунт" });
   }
 }

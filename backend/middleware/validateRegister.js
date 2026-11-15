@@ -1,4 +1,7 @@
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// users.email в рабочей БД — VARCHAR(100): без этой проверки INSERT падает
+// с 22001 и эндпоинт отвечает 500 вместо 400.
+const EMAIL_MAX_LENGTH = 100;
 
 // проверка данных при регистрации на валидность
 export default function validateRegister(req, res, next) {
@@ -11,7 +14,9 @@ export default function validateRegister(req, res, next) {
 
   const name = data.name.trim();
   const login = data.login.trim();
-  const email = data.email.trim();
+  // Email приводим к нижнему регистру: UNIQUE в users тогда отсекает
+  // регистровые дубликаты, а вход идёт по логину и не меняется.
+  const email = data.email.trim().toLowerCase();
 
   if (name.length < 2 || name.length > 50) {
     return res
@@ -31,6 +36,12 @@ export default function validateRegister(req, res, next) {
 
   if (!EMAIL_PATTERN.test(email)) {
     return res.status(400).json({ error: "Введите корректный email" });
+  }
+
+  if (email.length > EMAIL_MAX_LENGTH) {
+    return res
+      .status(400)
+      .json({ error: `Email должен содержать не более ${EMAIL_MAX_LENGTH} символов` });
   }
 
   if (data.password.length < 6 || data.password.length > 15) {

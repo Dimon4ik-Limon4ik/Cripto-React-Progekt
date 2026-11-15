@@ -8,7 +8,7 @@ export default async function clearFavorites(req, res) {
 
     return res.status(200).json({ favorites: [] });
   } catch (error) {
-    console.error("Ошибка очистки избранного:", error);
+    console.error("Ошибка очистки избранного:", error.code ?? error.message);
     return res.status(500).json({ error: "Не удалось очистить избранное" });
   }
 }

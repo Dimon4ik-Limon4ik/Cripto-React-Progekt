@@ -20,4 +20,11 @@ export default async function ensureUsersSchema() {
     ALTER TABLE users
     ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
   `);
+
+  // Момент последней смены пароля: по нему отзываются старые JWT.
+  // NULL означает «пароль не менялся», поэтому существующие токены не ломаются.
+  await pool.query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS password_changed_at TIMESTAMPTZ
+  `);
 }

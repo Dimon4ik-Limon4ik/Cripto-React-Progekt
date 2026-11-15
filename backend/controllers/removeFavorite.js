@@ -11,7 +11,7 @@ export default async function removeFavorite(req, res) {
     const favorites = await getUserFavorites(req.user.userId);
     return res.status(200).json({ favorites });
   } catch (error) {
-    console.error("Ошибка удаления из избранного:", error);
+    console.error("Ошибка удаления из избранного:", error.code ?? error.message);
     return res
       .status(500)
       .json({ error: "Не удалось удалить монету из избранного" });

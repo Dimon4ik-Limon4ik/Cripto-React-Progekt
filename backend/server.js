@@ -14,6 +14,9 @@ dotenv.config({ path: fileURLToPath(new URL("../secrets/.env", import.meta.url))
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Не раскрываем стек в заголовках ответов.
+app.disable("x-powered-by");
+
 const CLIENT_ORIGINS = (
   process.env.CLIENT_ORIGINS ??
   "http://localhost:5173,http://127.0.0.1:5173,http://localhost:4173,http://127.0.0.1:4173"
@@ -45,6 +48,15 @@ app.use((req, res, next) => {
   next();
 });
 
+// Базовые защитные заголовки без внешних зависимостей (helmet не требуется).
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("Referrer-Policy", "no-referrer");
+  res.setHeader("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'");
+  next();
+});
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -66,7 +78,19 @@ app.use((err, req, res, next) => {
     return res.status(400).json({ error: "Некорректный JSON в запросе" });
   }
 
-  console.error("Необработанная ошибка сервера:", err);
+  // Тело больше лимита express.json() — это ошибка клиента, а не сервера.
+  if (err?.type === "entity.too.large") {
+    return res.status(413).json({ error: "Слишком большой запрос" });
+  }
+
+  // Прочие 4xx от middleware (неверный Content-Type и т.п.) отдаём как есть.
+  const status = Number(err?.status ?? err?.statusCode ?? 500);
+  if (status >= 400 && status < 500) {
+    return res.status(status).json({ error: "Некорректный запрос" });
+  }
+
+  // Объект ошибки может содержать SQL и персональные данные — только код/сообщение.
+  console.error("Необработанная ошибка сервера:", err?.code ?? err?.message);
   return res.status(500).json({ error: "Внутренняя ошибка сервера" });
 });
 
