@@ -1,20 +1,39 @@
 .star {
-  font-family: "Material Symbols Outlined";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   right: 15px;
   top: 15px;
-  font-size: 30px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  font-family: "Material Symbols Outlined";
+  font-size: 28px;
+  line-height: 1;
   color: #0b0b0b;
-  transition: all 0.3s ease;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    transform 0.3s ease;
   font-variation-settings:
     "FILL" 0,
     "wght" 300,
     "GRAD" 0,
     "opsz" 24;
   cursor: pointer;
-  user-select: none;  
+  user-select: none;
 }
- /* color: #fcbd00; */
+
+.star:hover {
+  color: #fcbd00;
+  background: rgba(252, 189, 0, 0.14);
+  transform: scale(1.06);
+}
+
 .star.starActive {
   color: #f89d00;
   font-variation-settings:
@@ -23,7 +42,22 @@
     "GRAD" 0,
     "opsz" 24;
 }
-.star:hover {
-  color: #fcbd00;
-  
+
+.star:focus-visible {
+  outline: 2px solid #3b7a57;
+  outline-offset: 2px;
 }
+
+.Card.Card-dark .star {
+  color: #f4ebd9;
+}
+
+.Card.Card-dark .star:hover {
+  color: #fcbd00;
+  background: rgba(252, 189, 0, 0.14);
+}
+
+.Card.Card-dark .star.starActive {
+  color: #f89d00;
+}
+

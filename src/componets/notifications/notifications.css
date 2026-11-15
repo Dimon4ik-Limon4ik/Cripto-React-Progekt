@@ -1,0 +1,198 @@
+.notificationsWrapper {
+  --nt-text: #1e2229;
+  --nt-muted: #6b7280;
+  --nt-surface: rgba(255, 255, 255, 0.97);
+  --nt-border: rgba(30, 34, 41, 0.08);
+  --nt-success: #3b7a57;
+  --nt-error: #b85042;
+  --nt-info: #6b7280;
+  --nt-info-text: #ffffff;
+  --nt-close-hover: rgba(107, 114, 128, 0.12);
+  --nt-success-shadow: 0 4px 12px rgba(59, 122, 87, 0.28);
+  --nt-error-shadow: 0 4px 12px rgba(184, 80, 66, 0.26);
+  --nt-shadow:
+    0 12px 30px rgba(30, 34, 41, 0.14),
+    0 2px 6px rgba(30, 34, 41, 0.06);
+
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(380px, calc(100vw - 32px));
+  pointer-events: none;
+}
+
+.backgroundLayoutDark .notificationsWrapper {
+  --nt-text: #f4ebd9;
+  --nt-muted: #8a928c;
+  --nt-surface: rgba(30, 41, 59, 0.97);
+  --nt-border: rgba(244, 235, 217, 0.12);
+  --nt-success: #529471;
+  --nt-error: #c96f63;
+  --nt-info: #8a928c;
+  --nt-info-text: #161815;
+  --nt-close-hover: rgba(244, 235, 217, 0.08);
+  --nt-success-shadow: 0 4px 12px rgba(82, 148, 113, 0.3);
+  --nt-error-shadow: 0 4px 12px rgba(201, 111, 99, 0.28);
+  --nt-shadow: 0 16px 34px rgba(0, 0, 0, 0.45);
+}
+
+.Notifications {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 12px 14px 16px;
+  border: 1px solid var(--nt-border);
+  border-radius: 16px;
+  background: var(--nt-surface);
+  color: var(--nt-text);
+  box-shadow: var(--nt-shadow);
+  pointer-events: auto;
+  animation: notificationIn 0.3s ease-out;
+}
+
+.NotificationsIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--nt-success);
+  color: #ffffff;
+  box-shadow: var(--nt-success-shadow);
+}
+
+.Notifications-error .NotificationsIcon {
+  background: var(--nt-error);
+  box-shadow: var(--nt-error-shadow);
+}
+
+.Notifications-info .NotificationsIcon {
+  background: var(--nt-info);
+  color: var(--nt-info-text);
+  box-shadow: none;
+}
+
+.NotificationsIcon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.NotificationsContent {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+
+.NotificationsTitle {
+  margin: 0 0 2px;
+  color: var(--nt-text);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.NotificationsText {
+  margin: 0;
+  color: var(--nt-muted);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.DeleteNotifications {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--nt-muted);
+  font: inherit;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.DeleteNotifications:hover {
+  color: var(--nt-text);
+  background: var(--nt-close-hover);
+}
+
+.DeleteNotifications:focus-visible {
+  outline: 2px solid var(--nt-success);
+  outline-offset: 1px;
+}
+
+.Notifications-error .DeleteNotifications:focus-visible {
+  outline-color: var(--nt-error);
+}
+
+@keyframes notificationIn {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* На узких экранах шапка занимает центр сверху — уводим тосты под неё. */
+@media (max-width: 1180px) {
+  .notificationsWrapper {
+    top: 104px;
+  }
+}
+
+@media (max-width: 480px) {
+  .notificationsWrapper {
+    top: 96px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+  }
+
+  .Notifications {
+    gap: 12px;
+    padding: 12px 10px 12px 14px;
+  }
+
+  .NotificationsIcon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .NotificationsTitle {
+    font-size: 14px;
+  }
+
+  .NotificationsText {
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .Notifications {
+    animation: none;
+  }
+
+  .DeleteNotifications {
+    transition: none;
+  }
+}

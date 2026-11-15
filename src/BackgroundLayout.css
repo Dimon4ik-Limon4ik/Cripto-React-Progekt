@@ -9,6 +9,14 @@
   background-color: #1e293b;
 }
 
+/* На странице монеты прокрутка не нужна — весь контент помещается в экран. */
+.backgroundLayout.backgroundLayoutNoScroll {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
 h1,
 h2,
 h3 {

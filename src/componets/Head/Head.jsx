@@ -7,15 +7,17 @@ import Back from "./Picture/Back.svg";
 import SunMoon from "./SunMoon/SunMoon.jsx";
 import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../Context/SunMoonContext.js";
+import { useAuth } from "../../Context/AuthContext.jsx";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Head() {
   const [selectNumberPage, setSelectNumberPage] = useState(0);
   const { theme } = useContext(ThemeContext);
+  const { isAuthenticated, signOut } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
-  useEffect(()=>{navigate("/Home")},[])
+  const isCoinPage = location.pathname.startsWith("/coin/");
   useEffect(() => {
     const path = location.pathname;
     if (path === "/Home") setSelectNumberPage(0);
@@ -32,43 +34,67 @@ export default function Head() {
     navigate(path);
   };
 
+  // Если пользователь вошёл — кнопка выхода завершает сессию.
+  const handleAuthClick = () => {
+    if (isAuthenticated) signOut();
+    handleNavigate(3, "/authorization");
+  };
+
   return (
     <nav className={`HeadWrapper ${theme ? "" : "HeadWrapperDark"}`}>
-      <ul className={`functionalPanel ${theme ? "" : "func-Panel-Dark"}`}>
-        <li>
-          <button className="btnNav" onClick={() => handleNavigate(0, "/Home")}>
-            <img className="imageNav" src={Home} alt="Home" />
-          </button>
-        </li>
-        <li>
-          <button
-            className="btnNav"
-            onClick={() => handleNavigate(1, "/portfolio")}
-          >
-            <img className="imageNav" src={Start} alt="Start" />
-          </button>
-        </li>
-        <li>
-          <button
-            className="btnNav"
-            onClick={() => handleNavigate(2, "/profile")}
-          >
-            <img className="imageNav" src={Profile} alt="Profile" />
-          </button>
-        </li>
-        <div
-          className={`selectNav ${
-            selectNumberPage === 0
-              ? "selectNav_0"
-              : selectNumberPage === 1
-                ? "selectNav_1"
-                : "selectNav_2"
-          }`}
-        ></div>
-      </ul>
+      {isCoinPage ? (
+        <button
+          type="button"
+          className={`backNavBtn ${theme ? "" : "backNavBtn-dark"}`}
+          onClick={() => navigate("/Home")}
+          title="Вернуться на главную"
+        >
+          <img className="imageNav backNavIcon" src={Back} alt="" />
+          <span>Назад</span>
+        </button>
+      ) : (
+        <ul className={`functionalPanel ${theme ? "" : "func-Panel-Dark"}`}>
+          <li>
+            <button className="btnNav" onClick={() => handleNavigate(0, "/Home")}>
+              <img className="imageNav" src={Home} alt="Home" />
+            </button>
+          </li>
+          <li>
+            <button
+              className="btnNav"
+              onClick={() => handleNavigate(1, "/portfolio")}
+            >
+              <img className="imageNav" src={Start} alt="Start" />
+            </button>
+          </li>
+          <li>
+            <button
+              className="btnNav"
+              onClick={() => handleNavigate(2, "/profile")}
+            >
+              <img className="imageNav" src={Profile} alt="Profile" />
+            </button>
+          </li>
+          <div
+            className={`selectNav ${
+              selectNumberPage === 0
+                ? "selectNav_0"
+                : selectNumberPage === 1
+                  ? "selectNav_1"
+                  : selectNumberPage === 2
+                    ? "selectNav_2"
+                    : "selectNav_hidden"
+            }`}
+          ></div>
+        </ul>
+      )}
       <SunMoon />
-      <button className={`btnNav outBtn ${theme ? "" : "outBtn-Dark"}`} onClick={() => handleNavigate(3, "/authorization")} >
-        <img className="imageNav" src={Out} alt="Out Profile" />
+      <button
+        className={`btnNav outBtn ${theme ? "" : "outBtn-Dark"}`}
+        onClick={handleAuthClick}
+        title={isAuthenticated ? "Выйти из аккаунта" : "Войти"}
+      >
+        <img className="imageNav" src={Out} alt={isAuthenticated ? "Выйти" : "Войти"} />
       </button>
     </nav>
   );

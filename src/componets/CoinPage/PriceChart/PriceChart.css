@@ -1,0 +1,112 @@
+.priceChart {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  user-select: none;
+  touch-action: none;
+}
+
+.priceChartSvg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.priceChartGridLine {
+  stroke: rgba(30, 34, 41, 0.09);
+  stroke-width: 1;
+  stroke-dasharray: 3 6;
+}
+
+.priceChartAxisLabel {
+  fill: #6b7280;
+  font-size: 11px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.priceChartLine {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: priceChartDraw 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  filter: drop-shadow(0 2px 6px rgba(59, 122, 87, 0.25));
+}
+
+.priceChartCrosshair {
+  stroke: rgba(30, 34, 41, 0.32);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+.priceChartDot {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+}
+
+.priceChartTooltip {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 132px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: #1e2229;
+  color: #fcf8eb;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+  transform: translateY(-50%);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.priceChartTooltip--left {
+  transform: translate(-100%, -50%);
+}
+
+.priceChartTooltipDate {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.priceChartTooltipPrice {
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.priceChart-dark .priceChartGridLine {
+  stroke: rgba(244, 235, 217, 0.09);
+}
+
+.priceChart-dark .priceChartAxisLabel {
+  fill: #8a928c;
+}
+
+.priceChart-dark .priceChartLine {
+  filter: drop-shadow(0 2px 8px rgba(82, 148, 113, 0.35));
+}
+
+.priceChart-dark .priceChartCrosshair {
+  stroke: rgba(244, 235, 217, 0.32);
+}
+
+.priceChart-dark .priceChartTooltip {
+  background: #e6dfcc;
+  color: #161815;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+}
+
+@keyframes priceChartDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .priceChartLine {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

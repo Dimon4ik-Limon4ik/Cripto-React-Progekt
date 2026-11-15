@@ -13,3 +13,36 @@ ul {
   list-style: none;
 }
 
+/* Firefox: ::-webkit-scrollbar и скругление ползунка там не поддерживаются,
+   поэтому задаём только стандартные цвета (трек прозрачный, ползунок видимый) */
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-color: var(--scrollbar-thumb, rgba(160, 150, 140, 0.4)) transparent;
+  }
+}
+
+/* Скроллбар везде: трек прозрачный, ползунок закруглённый (WebKit / Blink / Safari) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  box-shadow: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb, rgba(160, 150, 140, 0.4));
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover, rgba(160, 150, 140, 0.6));
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+

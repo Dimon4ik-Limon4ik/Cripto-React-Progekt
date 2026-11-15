@@ -87,3 +87,17 @@
   padding: 4px;
   background-color: #5294717b;
 }
+
+/* Карточки на главной открывают страницу монеты */
+.Card[role="button"] {
+  cursor: pointer;
+}
+
+.Card[role="button"]:focus-visible {
+  outline: 2px solid #3b7a57;
+  outline-offset: 3px;
+}
+
+.Card.Card-dark[role="button"]:focus-visible {
+  outline-color: #529471;
+}

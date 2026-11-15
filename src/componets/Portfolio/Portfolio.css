@@ -1,0 +1,1089 @@
+.portfolioPage {
+  --pf-text: #1e2229;
+  --pf-muted: #6b7280;
+  --pf-panel: #fcf8eb;
+  --pf-panel-soft: rgba(154, 154, 154, 0.14);
+  --pf-card: #fcf8eb;
+  --pf-border: rgba(30, 34, 41, 0.08);
+  --pf-card-border: rgba(255, 255, 255, 0.65);
+  --pf-hover: rgba(107, 114, 128, 0.15);
+  --pf-soft-stat: rgba(30, 34, 41, 0.045);
+  --pf-growth: #3b7a57;
+  --pf-fall: #b85042;
+  --pf-primary: #2c3e35;
+  --pf-primary-text: #ffffff;
+  --pf-switch-bg: rgba(154, 154, 154, 0.14);
+  --pf-panel-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  --pf-card-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.12),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+
+  display: grid;
+  grid-template-columns: minmax(340px, 430px) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  gap: 18px;
+  flex: 1 1 auto;
+  width: min(1440px, 96vw);
+  min-height: 0;
+  margin: 92px auto 0;
+  color: var(--pf-text);
+  transition: color 0.5s ease;
+}
+
+.portfolioPage.portfolioPage-dark {
+  --pf-text: #f4ebd9;
+  --pf-muted: #8a928c;
+  --pf-panel: #1e293b;
+  --pf-panel-soft: rgba(244, 235, 217, 0.045);
+  --pf-card: #1e293b;
+  --pf-border: rgba(244, 235, 217, 0.1);
+  --pf-card-border: rgba(244, 235, 217, 0.06);
+  --pf-hover: rgba(244, 235, 217, 0.08);
+  --pf-soft-stat: rgba(244, 235, 217, 0.05);
+  --pf-growth: #529471;
+  --pf-fall: #c96f63;
+  --pf-primary: #e6dfcc;
+  --pf-primary-text: #161815;
+  --pf-switch-bg: rgba(244, 235, 217, 0.05);
+  --pf-panel-shadow:
+    0 5px 5px rgba(0, 0, 0, 0.5),
+    5px 0 5px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(244, 235, 217, 0.2),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.25);
+  --pf-card-shadow:
+    0 5px 5px rgba(0, 0, 0, 0.5),
+    5px 0 5px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(244, 235, 217, 0.2),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.25);
+}
+
+/* Левая колонка с прокручиваемым списком избранного */
+.portfolioFavoritesPanel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  padding: 20px 14px 14px;
+  border: 1px solid var(--pf-border);
+  border-radius: 30px;
+  background: var(--pf-panel-soft);
+  box-shadow: var(--pf-panel-shadow);
+  transition:
+    background-color 0.5s ease,
+    box-shadow 0.5s ease,
+    border-color 0.5s ease;
+}
+
+.portfolioFavoritesHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex: 0 0 auto;
+  padding: 0 8px;
+}
+
+.portfolioEyebrow {
+  margin: 0 0 2px;
+  color: var(--pf-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.portfolioTitle {
+  margin: 0;
+  color: var(--pf-text);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.portfolioCounter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: var(--pf-primary);
+  color: var(--pf-primary-text);
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(44, 62, 53, 0.25);
+}
+
+.portfolioHint {
+  flex: 0 0 auto;
+  margin: 6px 8px 14px;
+  color: var(--pf-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.portfolioFavoritesScroll {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 2px 6px 4px 5px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.portfolioListState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-height: 180px;
+  padding: 18px;
+  border: 1px dashed var(--pf-border);
+  border-radius: 20px;
+  background: var(--pf-soft-stat);
+  color: var(--pf-muted);
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* Карточка избранной монеты */
+.portfolioCard {
+  position: relative;
+  flex: 0 0 auto;
+  padding: 14px 14px 12px;
+  border: 1px solid transparent;
+  border-radius: 24px;
+  background: var(--pf-card);
+  box-shadow: var(--pf-card-shadow);
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.3s ease,
+    border-color 0.25s ease,
+    background-color 0.5s ease;
+}
+
+.portfolioCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
+}
+
+.portfolioPage-dark .portfolioCard:hover {
+  box-shadow:
+    0 14px 28px rgba(0, 0, 0, 0.55),
+    inset 0 1px 1px rgba(244, 235, 217, 0.2),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.portfolioCard.portfolioCard-selected {
+  border-color: var(--pf-growth);
+  box-shadow:
+    0 0 0 2px rgba(59, 122, 87, 0.18),
+    var(--pf-card-shadow);
+}
+
+.portfolioPage-dark .portfolioCard.portfolioCard-selected {
+  box-shadow:
+    0 0 0 2px rgba(82, 148, 113, 0.3),
+    var(--pf-card-shadow);
+}
+
+.portfolioCard:focus-visible {
+  outline: 2px solid var(--pf-growth);
+  outline-offset: 3px;
+}
+
+.portfolioCardHead {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.portfolioCardAvatar {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.portfolioCardIdentity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.portfolioCardTitleRow {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.portfolioCardName {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--pf-text);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.portfolioCardSymbol {
+  flex-shrink: 0;
+  color: var(--pf-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.portfolioCardPriceRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.portfolioCardPrice {
+  color: var(--pf-text);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.portfolioCardChange {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+}
+
+.portfolioCardChange-growth {
+  color: var(--pf-growth);
+  background: rgba(59, 122, 87, 0.12);
+}
+
+.portfolioCardChange-fall {
+  color: var(--pf-fall);
+  background: rgba(184, 80, 66, 0.12);
+}
+
+.portfolioCardChange-neutral {
+  color: var(--pf-muted);
+  background: var(--pf-soft-stat);
+}
+
+.portfolioPage-dark .portfolioCardChange-growth {
+  background: rgba(82, 148, 113, 0.16);
+}
+
+.portfolioPage-dark .portfolioCardChange-fall {
+  background: rgba(201, 111, 99, 0.16);
+}
+
+.portfolioCardChangeArrow {
+  font-size: 11px;
+  line-height: 1;
+}
+
+.portfolioCardSide {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex: 0 1 150px;
+  min-width: 110px;
+}
+
+.portfolioCardSide .miniChart {
+  width: 100%;
+  height: 56px;
+}
+
+/* Звезда в карточке портфеля — в потоке, над графиком */
+.star.portfolioCardStar {
+  position: static;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  font-size: 24px;
+}
+
+.portfolioPage-dark .star.portfolioCardStar {
+  color: #f4ebd9;
+}
+
+.portfolioPage-dark .star.portfolioCardStar:hover {
+  color: #fcbd00;
+}
+
+.portfolioPage-dark .star.portfolioCardStar.starActive {
+  color: #f89d00;
+}
+
+.portfolioCardStats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 12px;
+  padding: 10px;
+  border: 1px solid var(--pf-border);
+  border-radius: 18px;
+  background: var(--pf-soft-stat);
+}
+
+.portfolioCardStat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.portfolioCardStat-ath {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 7px;
+  border-top: 1px dashed var(--pf-border);
+}
+
+.portfolioCardStatLabel {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  overflow: hidden;
+  color: var(--pf-muted);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.portfolioCardStatValue {
+  overflow: hidden;
+  color: var(--pf-text);
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.portfolioCardStat-ath .portfolioCardStatValue {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.portfolioCardStatValue-growth {
+  color: var(--pf-growth);
+}
+
+.portfolioCardStatValue-fall {
+  color: var(--pf-fall);
+}
+
+.portfolioCardAthDate {
+  color: var(--pf-muted);
+  font-size: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.portfolioCardAthEmoji {
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* Правая колонка: график и информация */
+.portfolioDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  min-height: 0;
+}
+
+.portfolioChartPanel,
+.portfolioStatsPanel {
+  border: 1px solid var(--pf-card-border);
+  border-radius: 30px;
+  background: var(--pf-panel);
+  box-shadow: var(--pf-panel-shadow);
+  transition:
+    background-color 0.5s ease,
+    box-shadow 0.5s ease,
+    border-color 0.5s ease;
+}
+
+.portfolioChartPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 20px 24px 18px;
+  overflow: hidden;
+}
+
+.portfolioCoinHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  flex: 0 0 auto;
+}
+
+.portfolioCoinIdentity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.portfolioCoinAvatar {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.portfolioCoinTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.portfolioCoinName {
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+  color: var(--pf-text);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.portfolioCoinSymbol {
+  padding: 4px 10px;
+  border: 1px solid var(--pf-border);
+  border-radius: 999px;
+  background: var(--pf-soft-stat);
+  color: var(--pf-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.portfolioPriceBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.portfolioPriceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+}
+
+.portfolioCoinPrice {
+  margin: 0;
+  color: var(--pf-text);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.portfolioCoinCurrency {
+  color: var(--pf-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.portfolioCoinChange {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.portfolioCoinChange-growth {
+  color: var(--pf-growth);
+}
+
+.portfolioCoinChange-fall {
+  color: var(--pf-fall);
+}
+
+.portfolioCoinChange-neutral {
+  color: var(--pf-muted);
+}
+
+.portfolioCoinChangeArrow {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.portfolioChangePeriod {
+  color: var(--pf-muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.portfolioChartControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex: 0 0 auto;
+}
+
+.portfolioRangeSwitch {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--pf-switch-bg);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35);
+}
+
+.portfolioPage-dark .portfolioRangeSwitch {
+  box-shadow: inset 0 1px 1px rgba(244, 235, 217, 0.08);
+}
+
+.portfolioRangeBtn {
+  padding: 7px 13px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--pf-muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.portfolioRangeBtn:hover {
+  color: var(--pf-text);
+  background: var(--pf-hover);
+}
+
+.portfolioRangeBtn-active,
+.portfolioRangeBtn-active:hover {
+  color: var(--pf-primary-text);
+  background: var(--pf-primary);
+  box-shadow: 0 3px 10px rgba(44, 62, 53, 0.25);
+}
+
+.portfolioPage-dark .portfolioRangeBtn-active {
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+}
+
+.portfolioRangeBtn:focus-visible {
+  outline: 2px solid var(--pf-growth);
+  outline-offset: 2px;
+}
+
+.portfolioChartActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.portfolioDataSource {
+  color: var(--pf-muted);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.portfolioOpenCoin {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--pf-border);
+  border-radius: 999px;
+  background: var(--pf-soft-stat);
+  color: var(--pf-text);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.portfolioOpenCoin:hover {
+  background: var(--pf-hover);
+  transform: translateX(2px);
+}
+
+.portfolioOpenCoin:focus-visible {
+  outline: 2px solid var(--pf-growth);
+  outline-offset: 2px;
+}
+
+.portfolioOpenArrow {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.portfolioChartArea {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+}
+
+.portfolioChartMessage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  color: var(--pf-muted);
+  font-size: 14px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.portfolioRetryBtn {
+  padding: 8px 16px;
+  border: 1px solid var(--pf-border);
+  border-radius: 999px;
+  background: var(--pf-soft-stat);
+  color: var(--pf-text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+.portfolioRetryBtn:hover {
+  background: var(--pf-hover);
+}
+
+.portfolioRetryBtn:focus-visible {
+  outline: 2px solid var(--pf-growth);
+  outline-offset: 2px;
+}
+
+.portfolioSpinner {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border: 3px solid rgba(59, 122, 87, 0.2);
+  border-top-color: var(--pf-growth);
+  border-radius: 50%;
+  animation: portfolioSpin 0.8s linear infinite;
+}
+
+.portfolioPage-dark .portfolioSpinner {
+  border-color: rgba(82, 148, 113, 0.25);
+  border-top-color: var(--pf-growth);
+}
+
+/* Нижний блок с информацией о монете */
+.portfolioStatsPanel {
+  flex: 0 0 auto;
+  padding: 16px 20px 18px;
+}
+
+.portfolioStatsHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.portfolioStatsTitle {
+  margin: 0;
+  color: var(--pf-text);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.portfolioStatsSubtitle {
+  color: var(--pf-muted);
+  font-size: 11px;
+}
+
+.portfolioStatsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.portfolioStatTile {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  padding: 9px 11px;
+  border: 1px solid var(--pf-border);
+  border-radius: 16px;
+  background: var(--pf-soft-stat);
+}
+
+.portfolioStatTile-ath {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+
+.portfolioStatLabel {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  overflow: hidden;
+  color: var(--pf-muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.portfolioStatValue {
+  overflow: hidden;
+  color: var(--pf-text);
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.portfolioStatValue-growth {
+  color: var(--pf-growth);
+}
+
+.portfolioStatValue-fall {
+  color: var(--pf-fall);
+}
+
+.portfolioStatNote {
+  color: var(--pf-muted);
+  font-size: 10.5px;
+  font-weight: 500;
+}
+
+.portfolioStatAthEmoji {
+  font-size: 13px;
+  line-height: 1;
+}
+
+/* Пустые состояния */
+.portfolioEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 30px;
+  border: 1px dashed var(--pf-border);
+  border-radius: 30px;
+  background: var(--pf-panel-soft);
+  box-shadow: var(--pf-panel-shadow);
+  text-align: center;
+}
+
+.portfolioEmptyIcon {
+  font-family: "Material Symbols Outlined";
+  font-size: 56px;
+  line-height: 1;
+  color: var(--pf-muted);
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 300,
+    "GRAD" 0,
+    "opsz" 48;
+}
+
+.portfolioEmptyTitle {
+  margin: 0;
+  color: var(--pf-text);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.portfolioEmptyText {
+  max-width: 430px;
+  margin: 0;
+  color: var(--pf-muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.portfolioEmptyBtn {
+  margin-top: 6px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 999px;
+  background: var(--pf-primary);
+  color: var(--pf-primary-text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.portfolioEmptyBtn:hover {
+  transform: translateY(-2px);
+}
+
+.portfolioEmptyBtn:focus-visible {
+  outline: 2px solid var(--pf-growth);
+  outline-offset: 3px;
+}
+
+@keyframes portfolioSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolioSpinner {
+    animation-duration: 2s;
+  }
+
+  .portfolioCard,
+  .portfolioOpenCoin,
+  .portfolioEmptyBtn {
+    transition: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .portfolioPage {
+    grid-template-columns: minmax(300px, 370px) minmax(0, 1fr);
+  }
+
+  .portfolioCoinPrice {
+    font-size: 24px;
+  }
+
+  .portfolioChartPanel {
+    padding: 18px 18px 14px;
+  }
+
+  .portfolioStatsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .portfolioPage {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-right: 4px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+
+  .portfolioFavoritesPanel {
+    flex: 0 0 auto;
+    max-height: 52vh;
+  }
+
+  .portfolioDetail {
+    flex: 0 0 auto;
+  }
+
+  .portfolioChartPanel {
+    flex: 0 0 auto;
+    min-height: 360px;
+    overflow: visible;
+  }
+
+  .portfolioChartArea {
+    min-height: 240px;
+  }
+
+  .portfolioStatsPanel {
+    flex: 0 0 auto;
+  }
+
+  .portfolioEmpty {
+    min-height: 300px;
+    flex: 0 0 auto;
+  }
+}
+
+@media (max-width: 620px) {
+  .portfolioPage {
+    margin-top: 86px;
+    width: 94vw;
+  }
+
+  .portfolioFavoritesPanel {
+    padding: 16px 10px 12px;
+    border-radius: 24px;
+    max-height: 56vh;
+  }
+
+  .portfolioTitle {
+    font-size: 21px;
+  }
+
+  .portfolioCardHead {
+    flex-wrap: wrap;
+  }
+
+  .portfolioCardSide {
+    flex: 1 0 100%;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .portfolioCardSide .miniChart {
+    flex: 1 1 auto;
+    height: 48px;
+  }
+
+  .portfolioCoinHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .portfolioPriceBlock {
+    align-items: flex-start;
+  }
+
+  .portfolioCoinPrice {
+    font-size: 26px;
+  }
+
+  .portfolioDataSource {
+    display: none;
+  }
+
+  .portfolioRangeBtn {
+    padding: 6px 9px;
+    font-size: 12px;
+  }
+
+  .portfolioStatsPanel {
+    padding: 14px 14px 16px;
+    border-radius: 24px;
+  }
+
+  .portfolioChartPanel {
+    padding: 16px 14px 12px;
+    border-radius: 24px;
+  }
+
+  .portfolioStatValue {
+    font-size: 13px;
+  }
+
+  .portfolioStatLabel {
+    font-size: 10px;
+  }
+}
+
+@media (max-height: 700px) and (min-width: 901px) {
+  .portfolioChartPanel {
+    gap: 9px;
+    padding-top: 14px;
+  }
+
+  .portfolioCoinAvatar {
+    width: 38px;
+    height: 38px;
+  }
+
+  .portfolioCoinName {
+    font-size: 20px;
+  }
+
+  .portfolioCoinPrice {
+    font-size: 23px;
+  }
+
+  .portfolioStatsPanel {
+    padding: 12px 16px 14px;
+  }
+
+  .portfolioStatsHeader {
+    margin-bottom: 8px;
+  }
+
+  .portfolioStatTile {
+    padding: 7px 9px;
+  }
+}

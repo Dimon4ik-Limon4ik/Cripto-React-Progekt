@@ -80,6 +80,9 @@
 .selectNav_2 {
   left: 158px;
 }
+.selectNav_hidden {
+  opacity: 0;
+}
 
 .btnNav {
   display: flex;
@@ -128,5 +131,68 @@
 }
 .outBtn.outBtn-Dark:hover{
  background-color: rgba(154, 154, 154, 0.5);
+}
+
+/* Кнопка «Назад» на странице монеты занимает место functionalPanel */
+.backNavBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 200px;
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #2c3e35;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.5s ease;
+}
+
+.backNavBtn:hover {
+  background: rgba(154, 154, 154, 0.2);
+  transform: translateX(-2px);
+}
+
+.backNavBtn:focus-visible {
+  outline: 2px solid #3b7a57;
+  outline-offset: 2px;
+}
+
+.backNavIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.backNavBtn-dark {
+  border-color: rgba(230, 223, 204, 0);
+  background: rgba(255, 255, 255, 0.12);
+  color: #f4ebd9;
+  box-shadow:
+    2px 5px 6px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+.backNavBtn-dark:hover {
+  background: rgba(154, 154, 154, 0.5);
+}
+
+.backNavBtn-dark .backNavIcon {
+  filter: invert(1);
+}
+
+.backNavBtn-dark:focus-visible {
+  outline-color: #529471;
 }
 

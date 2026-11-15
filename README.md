@@ -1,16 +1,369 @@
-# React + Vite
+# 🪙 Crypto React Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Веб-приложение для просмотра криптовалют: живые котировки, графики цены, персональное избранное и учётные записи с JWT-авторизацией.
 
-Currently, two official plugins are available:
+Фронтенд на React + Vite, бэкенд на Express + PostgreSQL. Данные о монетах берутся из CoinGecko Demo API, длинная история (6 лет) — из дневных свечей Binance.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-7-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
+[![Express](https://img.shields.io/badge/Express-5-000000?logo=express&logoColor=white)](https://expressjs.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Содержание
 
-## Expanding the ESLint configuration
+- [Возможности](#возможности)
+- [Технологии](#технологии)
+- [Структура проекта](#структура-проекта)
+- [Быстрый старт](#быстрый-старт)
+- [Переменные окружения](#переменные-окружения)
+- [База данных](#база-данных)
+- [Скрипты](#скрипты)
+- [HTTP API](#http-api)
+- [Маршруты фронтенда](#маршруты-фронтенда)
+- [Как это работает](#как-это-работает)
+- [Ограничения и планы](#ограничения-и-планы)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## Возможности
+
+### Главная страница
+- Карточки топ-250 криптовалют по капитализации: цена в USD и изменение за 24 часа.
+- Поиск по названию монеты (по началу строки).
+- Клик по карточке открывает страницу монеты.
+- Бегущие строки топ-10 растущих и топ-10 падающих монет за 24 часа.
+- Анимация печатающегося текста, светлая и тёмная темы.
+
+### Страница монеты `/coin/:coinId`
+- Подробная информация о монете и текущая цена.
+- Интерактивный график цены за 24 часа, 7 дней, 30 дней, 1 год и 6 лет.
+- Переключение диапазонов без лишних запросов: результаты кешируются.
+- Прямая загрузка страницы по ссылке работает (данные монеты догружаются отдельно).
+- Кнопка «Назад» и адаптивная вёрстка.
+
+### Портфель `/portfolio`
+- Список избранных монет, отмеченных звёздочкой на главной.
+- Сводный график выбранной монеты и переключение периодов.
+- Избранное хранится в PostgreSQL и привязано к аккаунту — у каждого пользователя своё.
+
+### Аккаунт
+- Регистрация с клиентской и серверной валидацией.
+- Вход по логину и паролю, пароль хранится в виде bcrypt-хеша.
+- JWT-токен действует 30 дней, сессия восстанавливается после перезагрузки страницы.
+- Профиль: имя, логин, email, дата регистрации.
+- Смена пароля с подтверждением текущего пароля.
+- Удаление аккаунта с подтверждением пароля и каскадным удалением избранного.
+- Защищённые маршруты: без токена доступ только к главной, странице монеты и авторизации.
+- Всплывающие уведомления об успехе и ошибках.
+
+---
+
+## Технологии
+
+| Слой | Технологии |
+| --- | --- |
+| Фронтенд | React 19, React Router 7, Vite 7, обычный CSS |
+| Бэкенд | Node.js, Express 5, `jsonwebtoken`, `bcrypt`, `dotenv` |
+| База данных | PostgreSQL, драйвер `pg` |
+| Внешние API | CoinGecko Demo API (котировки и история), Binance Data API (дневные свечи) |
+| Инструменты | ESLint 9, `@vitejs/plugin-react`, `nodemon` |
+
+Графики рисуются собственными SVG-компонентами — сторонняя библиотека графиков не используется.
+
+---
+
+## Структура проекта
+
+```text
+Cripto-React-Progekt/
+├── index.html                 # HTML-точка входа Vite
+├── vite.config.js             # Конфиг Vite (host 127.0.0.1, порт 5173)
+├── eslint.config.js           # Правила ESLint для браузера и Node
+├── package.json               # Зависимости и скрипты фронтенда
+├── src/
+│   ├── main.jsx               # Точка входа: провайдеры + роутер
+│   ├── BackgroundLayout.jsx   # Роутинг, тема, загрузка котировок, защита маршрутов
+│   ├── Context/
+│   │   ├── AuthContext.jsx        # Токен, вход/выход, автопроверка сессии
+│   │   ├── FavoritesContext.jsx   # Избранное пользователя с синхронизацией с API
+│   │   ├── NotificationsContext.jsx
+│   │   ├── CriptoContext.js        # Контекст со списком монет
+│   │   └── SunMoonContext.js       # Контекст темы
+│   ├── Services/
+│   │   ├── Services.js            # CoinGecko и Binance: список, монета, история
+│   │   ├── APIreg.js / APIlogin.js
+│   │   ├── addUserAndSaveToken.js / loginAndSaveToken.js
+│   │   ├── profileApi.js          # Профиль, смена пароля, удаление аккаунта
+│   │   ├── favoritesApi.js        # Избранное
+│   │   ├── tokenCheck.js          # Проверка JWT на сервере
+│   │   └── tokenStorage.js        # Сохранение токена в localStorage
+│   └── componets/                 # Компоненты и их CSS
+│       ├── Head/                  # Навигация, переключатель темы
+│       ├── HomePage/              # Карточки, поиск, бегущие строки, печать текста
+│       ├── CoinPage/              # Страница монеты и SVG-график
+│       ├── Portfolio/             # Избранное, мини-графики
+│       ├── Profile/               # Профиль и модальные окна
+│       ├── Authorization/         # Формы входа и регистрации
+│       ├── notifications/         # Уведомления
+│       └── Picture/               # SVG-иконки
+└── backend/
+    ├── server.js                # Express-приложение, CORS, JSON, ошибки
+    ├── secret.env               # Локальные секреты (не коммитить!)
+    ├── package.json
+    ├── routes/
+    │   ├── Router.js            # /auth: регистрация, вход, профиль
+    │   ├── cryptoRouter.js      # /crypto: прокси-эндпоинты CoinGecko
+    │   └── favoritesRouter.js   # /favorites: CRUD избранного
+    ├── controllers/             # Обработчики запросов
+    ├── middleware/              # Валидация, проверка JWT
+    ├── services/                # Пул БД, bcrypt, JWT, схемы, избранное
+    └── endpoin/                 # Ранний неиспользуемый модуль CoinGecko
+```
+
+> В названиях папок и файлов сохранены авторские варианты (`componets`, `endpoin`, `Progekt`) — переименование не входило в задачу.
+
+---
+
+## Быстрый старт
+
+### Требования
+
+- Node.js **20.19+** или **22.12+** (Vite 7); проект проверен на Node.js 24.
+- npm 10+.
+- PostgreSQL 14+ с базой `my_crypto`.
+
+### 1. Клонирование
+
+```bash
+git clone https://github.com/Dimon4ik-Limon4ik/Cripto-React-Progekt.git
+cd Cripto-React-Progekt
+```
+
+### 2. Установка зависимостей
+
+```bash
+npm install
+cd backend
+npm install
+cd ..
+```
+
+### 3. Настройка базы данных
+
+Создайте базу и таблицу `users` (подробнее — в разделе [База данных](#база-данных)).
+
+### 4. Настройка окружения
+
+Создайте файл `backend/secret.env` по образцу из раздела [Переменные окружения](#переменные-окружения).
+
+### 5. Запуск
+
+В первом терминале — бэкенд:
+
+```bash
+cd backend
+npm run dev
+```
+
+Во втором терминале — фронтенд:
+
+```bash
+npm run dev
+```
+
+- Клиент: http://127.0.0.1:5173
+- Сервер: http://localhost:3000
+
+> Фронтенд обращается к API по адресу `http://localhost:3000`, поэтому бэкенд должен быть запущен.
+
+### Сборка для продакшена
+
+```bash
+npm run build     # результат в dist/
+npm run preview   # локальный просмотр сборки
+```
+
+---
+
+## Переменные окружения
+
+Бэкенд читает `backend/secret.env` (кодировка UTF-8). Пример:
+
+```env
+# Секрет для подписи JWT — любая длинная случайная строка
+SECRET_KEY=replace-with-a-long-random-secret
+
+# Доступ к PostgreSQL
+UserBD=postgres
+passwordBD=your_db_password
+
+# Ключ CoinGecko Demo API (только для серверных прокси-эндпоинтов)
+COINGECKO_API_KEY=CG-xxxxxxxxxxxxxxxxxxxx
+
+# Необязательные параметры сервера
+PORT=3000
+CLIENT_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+```
+
+| Переменная | Обязательна | Назначение |
+| --- | --- | --- |
+| `SECRET_KEY` | да | Подпись и проверка JWT. |
+| `UserBD` | да | Пользователь PostgreSQL. |
+| `passwordBD` | да | Пароль PostgreSQL. |
+| `COINGECKO_API_KEY` | для `/crypto/*` | Ключ CoinGecko Demo. |
+| `PORT` | нет | Порт сервера, по умолчанию `3000`. |
+| `CLIENT_ORIGINS` | нет | Список разрешённых Origin через запятую. По умолчанию разрешены localhost на портах 5173 и 4173. |
+
+`dotenv` в `poolBD.js` дополнительно очищает значения `SECRET_KEY`, `UserBD` и `passwordBD` от обрамляющих кавычек и завершающей точки с запятой — старый формат файла продолжит работать.
+
+> ⚠️ Файл `secret.env` содержит настоящие секреты и сейчас **не** исключён в `.gitignore`. Перед публикацией репозитория удалите его из индекса Git, добавьте в `.gitignore` и перевыпустите пароли и API-ключи.
+
+---
+
+## База данных
+
+Используется база `my_crypto` на `localhost:5432`. Подключение настроено в `backend/services/poolBD.js`.
+
+Минимальная схема таблицы пользователей:
+
+```sql
+CREATE TABLE IF NOT EXISTS users (
+  idusers    SERIAL PRIMARY KEY,
+  name       VARCHAR(50)  NOT NULL,
+  login      VARCHAR(15)  NOT NULL UNIQUE,
+  password   VARCHAR(255) NOT NULL, -- bcrypt-хеш
+  email      VARCHAR(255) NOT NULL UNIQUE,
+  created_at TIMESTAMPTZ  NOT NULL DEFAULT NOW()
+);
+```
+
+При старте сервер сам приводит схему к актуальному виду:
+
+- `ensureUsersSchema` добавляет `users.created_at`, если колонки нет;
+- `ensureFavoritesSchema` создаёт `cryptoinfavorites`, чистит дубликаты и строки без владельца, добавляет составной первичный ключ `(idusers, idcrypto)` и внешний ключ на `users` с `ON DELETE CASCADE`.
+
+Таблица избранного:
+
+```sql
+CREATE TABLE cryptoinfavorites (
+  idusers    INTEGER      NOT NULL REFERENCES users(idusers) ON DELETE CASCADE,
+  idcrypto   VARCHAR(100) NOT NULL,
+  created_at TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (idusers, idcrypto)
+);
+```
+
+Таблицу `users` сервер не создаёт автоматически — её нужно подготовить один раз вручную.
+
+---
+
+## Скрипты
+
+### Корень проекта (фронтенд)
+
+| Команда | Что делает |
+| --- | --- |
+| `npm run dev` | Запускает Vite dev-сервер на `127.0.0.1:5173`. |
+| `npm run build` | Собирает продакшен-бандл в `dist/`. |
+| `npm run preview` | Поднимает локальный сервер для просмотра сборки. |
+| `npm run lint` | Проверяет `*.js` и `*.jsx` через ESLint. |
+
+### `backend/`
+
+| Команда | Что делает |
+| --- | --- |
+| `npm run dev` | Запускает сервер через `nodemon` с автоперезапуском. |
+| `npm start` | Запускает сервер через `node server.js`. |
+
+---
+
+## HTTP API
+
+Базовый адрес: `http://localhost:3000`.
+
+### Служебное
+
+| Метод | Путь | Доступ | Описание |
+| --- | --- | --- | --- |
+| `GET` | `/` | публично | Проверка живости: `{ "status": "ok" }`. |
+
+### Авторизация и профиль — `/auth`
+
+| Метод | Путь | Доступ | Тело запроса | Описание |
+| --- | --- | --- | --- | --- |
+| `POST` | `/auth/addUsers` | публично | `{ name, login, password, email }` | Регистрация. Возвращает `201` с `token` и `userId`. |
+| `POST` | `/auth/login` | публично | `{ login, password }` | Вход. Возвращает `200` с `token` и `userId`. |
+| `GET` | `/auth/tokenCheck` | JWT | — | Проверка токена: `{ valid: true, userId }`. |
+| `GET` | `/auth/profile` | JWT | — | Профиль: `{ user: { id, name, login, email, registeredAt } }`. |
+| `PATCH` | `/auth/changePassword` | JWT | `{ currentPassword, newPassword, confirmPassword }` | Смена пароля. |
+| `DELETE` | `/auth/deleteAccount` | JWT | `{ password }` | Удаление аккаунта и его избранного. |
+
+### Криптовалюты — `/crypto` (серверный прокси)
+
+| Метод | Путь | Доступ | Описание |
+| --- | --- | --- | --- |
+| `GET` | `/crypto/markets` | JWT | Топ-250 монет по капитализации. |
+| `GET` | `/crypto/top-gainers` | JWT | Топ-10 монет по росту за 24 часа. |
+| `GET` | `/crypto/top-losers` | JWT | Топ-10 монет по падению за 24 часа. |
+
+### Избранное — `/favorites`
+
+| Метод | Путь | Доступ | Тело запроса | Описание |
+| --- | --- | --- | --- | --- |
+| `GET` | `/favorites` | JWT | — | `{ favorites: ["bitcoin", ...] }`. |
+| `POST` | `/favorites` | JWT | `{ coinId }` | Добавить монету (повторное добавление безопасно). |
+| `DELETE` | `/favorites/:coinId` | JWT | — | Удалить одну монету. |
+| `DELETE` | `/favorites` | JWT | — | Очистить всё избранное пользователя. |
+
+Токен передаётся в заголовке:
+
+```http
+Authorization: Bearer <jwt>
+```
+
+Формат ошибок единый:
+
+```json
+{ "error": "Текст ошибки" }
+```
+
+Коды: `400` — невалидные данные, `401` — нет/просрочен токен, `404` — не найдено, `409` — логин или email заняты, `500` — внутренняя ошибка, `503` — недоступна БД.
+
+---
+
+## Маршруты фронтенда
+
+| Путь | Компонент | Доступ |
+| --- | --- | --- |
+| `/` | редирект на `/Home` | публично |
+| `/Home` | Главная с карточками монет | публично |
+| `/coin/:coinId` | Страница монеты и график | публично |
+| `/portfolio` | Портфель (избранное) | только с токеном |
+| `/profile` | Профиль пользователя | только с токеном |
+| `/authorization` | Вход и регистрация | только без токена |
+| `*` | редирект на `/Home` | публично |
+
+---
+
+## Как это работает
+
+1. При старте `AuthContext` проверяет токен из `localStorage` запросом `/auth/tokenCheck` и восстанавливает сессию.
+2. `BackgroundLayout` раз в 3 секунды загружает список монет из CoinGecko и раздаёт его через `CriptoContext`. Пустой ответ не затирает уже загруженные данные.
+3. `FavoritesContext` после входа загружает персональное избранное с `/favorites` и обновляет список при клике по звёздочке, откатывая изменение при ошибке.
+4. Страница монеты и портфель кешируют историю цен в памяти и используют CoinGecko для периодов до года, Binance — для 6 лет.
+5. Все защищённые запросы проходят через `TokenCheck`: проверяется подпись JWT, наличие `userId` и существование пользователя в БД.
+6. Пароли хешируются `bcrypt` с cost 10; смена пароля и удаление аккаунта требуют ввода текущего пароля.
+
+---
+
+## Ограничения и планы
+
+- **Секреты в репозитории.** `backend/secret.env`, ключ CoinGecko в `src/Services/Services.js` и `backend/endpoin/apiCoinGecko.js` захардкожены. В продакшене ключи должны жить только на сервере, а фронтенд — обращаться к `/crypto/*`.
+- **CORS настроен на localhost.** Для деплоя добавьте домен в `CLIENT_ORIGINS`.
+- **Нет автоматических тестов.** В `backend/package.json` заглушка вместо тестов, на фронтенде тестовый runner не подключён.
+- **Нет пагинации и серверного кеша.** Главная загружает 250 монет целиком каждые 3 секунды; при росте нагрузки нужен кеш на сервере.
+- **Портфель — это избранное.** Учёт количества монет и цены покупки пока не реализован.
+- **Нет refresh-токенов.** JWT живёт 30 дней, после истечения нужен повторный вход.
+- **Папка `dist/` и файл `build_err.txt`** — служебные артефакты, их можно удалить.

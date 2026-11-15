@@ -1,6 +1,8 @@
 import "./HomePage.css";
 import TypeWriterText from "./TypeWriterText/TypeWriterText.jsx";
 import CriptoCard from "./CriptoCard/CriptoCard.jsx";
+import TopGainersTicker from "./TopGainersTicker/TopGainersTicker.jsx";
+import TopLosersTicker from "./TopLosersTicker/TopLosersTicker.jsx";
 import { CriptoContext } from "./../../Context/CriptoContext.js";
 import { ThemeContext } from "./../../Context/SunMoonContext.js";
 import { useContext, useState } from "react";
@@ -17,6 +19,7 @@ export default function HomePage() {
       return (
         <CriptoCard
           key={coin.id}
+          CryptaId={coin.id}
           CryptaImg={coin?.image}
           CryptaName={coin?.name}
           CryptaPrace={coin?.current_price}
@@ -30,6 +33,7 @@ export default function HomePage() {
         return (
           <CriptoCard
             key={coin.id}
+            CryptaId={coin.id}
             CryptaImg={coin?.image}
             CryptaName={coin?.name}
             CryptaPrace={coin?.current_price}
@@ -42,32 +46,40 @@ export default function HomePage() {
 
   if (!crypta || crypta.length === 0) {
     return (
-      <div className={theme === true ? "Conten " : "Conten Conten-dark"}>
-        <div className="Cripta">
-          <TypeWriterText />
-          <input type="text" className="CriptoSearch" />
-          <div className="pageConten">
-            <p>Загрузка...</p>
+      <>
+        <div className={theme === true ? "Conten " : "Conten Conten-dark"}>
+          <div className="Cripta">
+            <TypeWriterText />
+            <input type="text" className="CriptoSearch" />
+            <div className="pageConten">
+              <p>Загрузка...</p>
+            </div>
           </div>
         </div>
-      </div>
+        <TopGainersTicker />
+        <TopLosersTicker />
+      </>
     );
   }
 
   return (
-    <div className={theme === true ? "Conten " : "Conten Conten-dark"}>
-      <div className="Cripta">
-        <TypeWriterText />
-        <input
-          type="text"
-          value={SearchValue}
-          onChange={(e) => {
-            setSearchValue(e.target.value);
-          }}
-          className="CriptoSearch"
-        />
-        <div className="pageConten">{CryptaCardArray}</div>
+    <>
+      <div className={theme === true ? "Conten " : "Conten Conten-dark"}>
+        <div className="Cripta">
+          <TypeWriterText />
+          <input
+            type="text"
+            value={SearchValue}
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+            }}
+            className="CriptoSearch"
+          />
+          <div className="pageConten">{CryptaCardArray}</div>
+        </div>
       </div>
-    </div>
+      <TopGainersTicker />
+      <TopLosersTicker />
+    </>
   );
 }

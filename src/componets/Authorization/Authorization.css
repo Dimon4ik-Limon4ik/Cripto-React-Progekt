@@ -1,6 +1,9 @@
 .LoginPanel {
   width: 400px;
-  height: 450px;
+  max-width: calc(100vw - 20px);
+  min-height: 450px;
+  max-height: calc(100vh - 20px);
+  overflow-y: auto;
   padding: 30px;
   display: flex;
   flex-direction: column;
@@ -15,6 +18,7 @@
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   background: rgba(255, 255, 255, 0.05);
+  color: #1e2229;
   box-shadow:
     0 2px 6px rgba(0, 0, 0, 0.15),
     inset 0 1px 1px rgba(255, 255, 255, 0.6);
@@ -22,6 +26,7 @@
 .labelReg {
   margin-top: 20px;
   margin-bottom: 50px;
+  text-align: center;
 }
 
 .inputRegister {
@@ -29,6 +34,7 @@
   border: none;
   background: none;
   outline: none;
+  color: inherit;
   box-shadow:
     0 2px 6px rgba(0, 0, 0, 0.15),
     inset 0 1px 1px rgba(255, 255, 255, 0.6);
@@ -39,6 +45,14 @@
   font-size: 16px;
   display: block;
   transition: all 0.3s ease;
+}
+.inputRegister::placeholder {
+  color: #6b7280;
+  opacity: 0.8;
+}
+.inputRegister:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 .wrapperBtn-1d12 {
   width: 280px;
@@ -51,7 +65,7 @@
   justify-content: space-between;
   width: 170px;
   padding: 5px 10px;
-  background: rga(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 100px;
   box-shadow:
     0 2px 6px rgba(0, 0, 0, 0.15),
@@ -67,6 +81,10 @@
   cursor: pointer;
   font-size: 14px;
   transition: all 0.3s ease;
+}
+.btn-1f2:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 .btn-1f2:hover {
   border-radius: 10px;
@@ -110,4 +128,35 @@
   box-shadow:
     0 4px 8px rgba(0, 0, 0, 0.3),
     inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+.buttonIn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.btn-1f2:disabled:hover {
+  background: none;
+}
+
+/* Тёмная тема */
+.backgroundLayoutDark .LoginPanel {
+  color: #f4ebd9;
+  border-color: rgba(244, 235, 217, 0.2);
+  background: rgba(244, 235, 217, 0.04);
+  box-shadow:
+    0 5px 5px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(244, 235, 217, 0.2),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.25);
+}
+.backgroundLayoutDark .labelReg {
+  color: #f4ebd9;
+}
+.backgroundLayoutDark .inputRegister {
+  background: rgba(244, 235, 217, 0.06);
+}
+.backgroundLayoutDark .inputRegister::placeholder {
+  color: #8a928c;
+}
+.backgroundLayoutDark .SelectRegAndIn,
+.backgroundLayoutDark .buttonIn {
+  background: rgba(244, 235, 217, 0.08);
 }
