@@ -1,0 +1,25 @@
+{
+  "name": "crypto-project-tests",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Изолированное окружение для тестов и статического анализа. Не влияет на зависимости проекта.",
+  "scripts": {
+    "lint:security": "eslint --config test/eslint.security.config.mjs backend src",
+    "test:copy": "node scripts/07-copy-check.mjs",
+    "test:api": "vitest run --config api/vitest.config.mjs",
+    "db:ensure-copy": "node scripts/03-ensure-copy.mjs",
+    "db:schema": "node scripts/03-schema-info.mjs",
+    "test:ui": "playwright test --config ui/playwright.config.mjs",
+    "test:all": "node scripts/05-run-all.mjs",
+    "scan:secrets": "node scripts/05-secrets-scan.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-security": "^3.0.1",
+    "globals": "^16.5.0",
+    "supertest": "^7.3.2",
+    "vitest": "^5.1.0"
+  }
+}
