@@ -25,6 +25,9 @@ function ProtectedRoute({ children }) {
 
 export default function BackgroundLayout() {
   const [arrayOfCryptocurrencies, setArrayOfCryptocurrencies] = useState([]);
+  // loading | ready | error — нужно, чтобы отличить «ещё грузится» от сбоя.
+  const [cryptoStatus, setCryptoStatus] = useState("loading");
+  const [cryptoReloadKey, setCryptoReloadKey] = useState(0);
   const [theme, setTheme] = useState(true);
   const { isAuthenticated, isCheckingToken } = useAuth();
   const location = useLocation();
@@ -34,14 +37,27 @@ export default function BackgroundLayout() {
 
   useEffect(() => {
     let cancelled = false;
+    let failures = 0;
 
     const loadCrypto = async () => {
-      const crypto = await getCryptoMarkets();
+      try {
+        const crypto = await getCryptoMarkets({ rethrow: true });
 
-      // Пустой ответ обычно означает сетевую ошибку или лимит API —
-      // не стираем уже загруженные данные из-за одного неудачного опроса.
-      if (!cancelled && Array.isArray(crypto) && crypto.length > 0) {
-        setArrayOfCryptocurrencies(crypto);
+        // Пустой ответ не затирает уже загруженные данные.
+        if (!cancelled && Array.isArray(crypto) && crypto.length > 0) {
+          failures = 0;
+          setArrayOfCryptocurrencies(crypto);
+          setCryptoStatus("ready");
+        }
+      } catch {
+        failures += 1;
+
+        // Одиночный сбой считаем временным (следующий опрос через 3 с),
+        // а устойчивую ошибку показываем с кнопкой повтора. Уже
+        // загруженные котировки при этом не стираем.
+        if (!cancelled && failures >= 2) {
+          setCryptoStatus((prev) => (prev === "ready" ? "ready" : "error"));
+        }
       }
     };
 
@@ -52,7 +68,13 @@ export default function BackgroundLayout() {
       cancelled = true;
       clearInterval(id);
     };
-  }, []);
+  }, [cryptoReloadKey]);
+
+  // Повторная загрузка по кнопке: перезапускает и первый запрос, и опрос.
+  const reloadCrypto = () => {
+    setCryptoStatus("loading");
+    setCryptoReloadKey((key) => key + 1);
+  };
 
   const toggleTheme = () => {
     setTheme(!theme);
@@ -70,7 +92,15 @@ export default function BackgroundLayout() {
 
           <Routes>
             <Route path="/" element={<Navigate to="/Home" replace />} />
-            <Route path="/Home" element={<><Head /> <HomePage /></> } />
+            <Route
+              path="/Home"
+              element={
+                <>
+                  <Head />
+                  <HomePage status={cryptoStatus} onRetry={reloadCrypto} />
+                </>
+              }
+            />
             <Route
               path="/coin/:coinId"
               element={

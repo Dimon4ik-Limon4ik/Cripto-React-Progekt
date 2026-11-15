@@ -2,7 +2,7 @@
 // Клиент обращается к серверному прокси, поэтому в бандл секреты не попадают.
 const CRYPTO_API = "http://localhost:3000/crypto";
 
-export async function getCryptoMarkets() {
+export async function getCryptoMarkets(options = {}) {
   try {
     const url = `${CRYPTO_API}/markets`;
 
@@ -25,6 +25,10 @@ export async function getCryptoMarkets() {
     return data;
   } catch (err) {
     console.log(`В файле "Services.js" ошибка: ${err}`);
+
+    // Вызывающий код может показать ошибку и предложить повтор.
+    if (options.rethrow) throw err;
+
     return [];
   }
 }

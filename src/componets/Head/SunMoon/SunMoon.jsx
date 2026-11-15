@@ -11,6 +11,9 @@ export default function SunMoon() {
     <button
       className={`btnSunMoon ${theme ? "" : "dark"}`}
       onClick={() => toggleTheme()}
+      aria-label={theme ? "Включить тёмную тему" : "Включить светлую тему"}
+      aria-pressed={!theme}
+      title={theme ? "Тёмная тема" : "Светлая тема"}
     >
       <img className="imgSunMoon" src={Sun} alt="" />
 

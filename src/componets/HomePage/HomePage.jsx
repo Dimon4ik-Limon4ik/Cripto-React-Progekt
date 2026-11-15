@@ -8,7 +8,7 @@ import { ThemeContext } from "./../../Context/SunMoonContext.js";
 import { useContext, useState } from "react";
 
 
-export default function HomePage() {
+export default function HomePage({ status = "ready", onRetry }) {
   let CryptaCardArray = [];
   const crypta = useContext(CriptoContext);
   const { theme } = useContext(ThemeContext);
@@ -50,9 +50,27 @@ export default function HomePage() {
         <div className={theme === true ? "Conten " : "Conten Conten-dark"}>
           <div className="Cripta">
             <TypeWriterText />
-            <input type="text" className="CriptoSearch" />
+            <input
+              type="search"
+              className="CriptoSearch"
+              placeholder="Поиск монеты"
+              aria-label="Поиск монеты"
+            />
             <div className="pageConten">
-              <p>Загрузка...</p>
+              {status === "error" ? (
+                <>
+                  <p>Не удалось загрузить котировки.</p>
+                  <button
+                    type="button"
+                    className="portfolioEmptyBtn"
+                    onClick={onRetry}
+                  >
+                    Повторить
+                  </button>
+                </>
+              ) : (
+                <p>Загрузка...</p>
+              )}
             </div>
           </div>
         </div>
@@ -68,12 +86,14 @@ export default function HomePage() {
         <div className="Cripta">
           <TypeWriterText />
           <input
-            type="text"
+            type="search"
             value={SearchValue}
             onChange={(e) => {
               setSearchValue(e.target.value);
             }}
             className="CriptoSearch"
+            placeholder="Поиск монеты"
+            aria-label="Поиск монеты"
           />
           <div className="pageConten">{CryptaCardArray}</div>
         </div>
