@@ -3,9 +3,10 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 import pg from "pg";
 
-dotenv.config({ path: fileURLToPath(new URL("../secret.env", import.meta.url)) });
+// Секреты лежат в secrets/.env в корне проекта и не коммитятся в Git.
+dotenv.config({ path: fileURLToPath(new URL("../../secrets/.env", import.meta.url)) });
 
-// Поддерживаем существующий secret.env с точкой с запятой после значений.
+// Поддерживаем значения с точкой с запятой после них.
 for (const key of ["SECRET_KEY", "UserBD", "passwordBD"]) {
   const value = process.env[key]?.trim();
   if (value) {

@@ -1,8 +1,10 @@
-const API_KEY = "CG-kuBTAsEac9yHn1KpVA58k7VE";
+// Ключ CoinGecko хранится только на сервере (secrets/.env).
+// Клиент обращается к серверному прокси, поэтому в бандл секреты не попадают.
+const CRYPTO_API = "http://localhost:3000/crypto";
 
 export async function getCryptoMarkets() {
   try {
-    const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&x_cg_demo_api_key=${API_KEY}`;
+    const url = `${CRYPTO_API}/markets`;
 
     const response = await fetch(url).catch(() => {
       throw new Error("NETWORK_ERROR");
@@ -22,7 +24,7 @@ export async function getCryptoMarkets() {
 
     return data;
   } catch (err) {
-    console.log(`В файле "cryptoApi.js" ошибка: ${err}`);
+    console.log(`В файле "Services.js" ошибка: ${err}`);
     return [];
   }
 }
@@ -30,7 +32,7 @@ export async function getCryptoMarkets() {
 // Топ-10 криптовалют по росту за 24 часа
 export async function getTopGainers() {
   try {
-    const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&x_cg_demo_api_key=${API_KEY}`;
+    const url = `${CRYPTO_API}/top-gainers`;
 
     const response = await fetch(url).catch(() => {
       throw new Error("NETWORK_ERROR");
@@ -61,7 +63,7 @@ export async function getTopGainers() {
 // Топ-10 криптовалют по падению за 24 часа
 export async function getTopLosers() {
   try {
-    const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&x_cg_demo_api_key=${API_KEY}`;
+    const url = `${CRYPTO_API}/top-losers`;
 
     const response = await fetch(url).catch(() => {
       throw new Error("NETWORK_ERROR");
@@ -89,15 +91,12 @@ export async function getTopLosers() {
   }
 }
 
-const COINGECKO_API = "https://api.coingecko.com/api/v3";
 const BINANCE_API = "https://data-api.binance.vision/api/v3";
 
 // Данные одной монеты — нужны при прямой загрузке страницы /coin/:id
 export async function getCryptoById(coinId) {
   try {
-    const url = `${COINGECKO_API}/coins/markets?vs_currency=usd&ids=${encodeURIComponent(
-      coinId,
-    )}&x_cg_demo_api_key=${API_KEY}`;
+    const url = `${CRYPTO_API}/coin/${encodeURIComponent(coinId)}`;
 
     const response = await fetch(url).catch(() => {
       throw new Error("NETWORK_ERROR");
@@ -111,11 +110,16 @@ export async function getCryptoById(coinId) {
       throw new Error("PARSE_ERROR");
     });
 
-    if (!Array.isArray(data)) {
+    // Сервер возвращает null, если монета с таким id не найдена.
+    if (data === null) {
+      return null;
+    }
+
+    if (!data || typeof data !== "object" || Array.isArray(data)) {
       throw new Error("INVALID_DATA_FORMAT");
     }
 
-    return data[0] ?? null;
+    return data;
   } catch (err) {
     console.log(`В файле "Services.js" ошибка: ${err}`);
     return null;
@@ -125,9 +129,9 @@ export async function getCryptoById(coinId) {
 // История цены для графика за 1–365 дней (CoinGecko Demo).
 export async function getCryptoMarketChart(coinId, days) {
   try {
-    const url = `${COINGECKO_API}/coins/${encodeURIComponent(
+    const url = `${CRYPTO_API}/chart/${encodeURIComponent(
       coinId,
-    )}/market_chart?vs_currency=usd&days=${days}&x_cg_demo_api_key=${API_KEY}`;
+    )}?days=${days}`;
 
     const response = await fetch(url).catch(() => {
       throw new Error("NETWORK_ERROR");

@@ -14,7 +14,7 @@
   font-family: "Material Symbols Outlined";
   font-size: 28px;
   line-height: 1;
-  color: #0b0b0b;
+  color: var(--card-text, #1e2229);
   transition:
     color 0.3s ease,
     background-color 0.3s ease,
@@ -48,8 +48,9 @@
   outline-offset: 2px;
 }
 
+/* Цвет иконки на карточке — по палитре темы */
 .Card.Card-dark .star {
-  color: #f4ebd9;
+  color: var(--card-text, #f4ebd9);
 }
 
 .Card.Card-dark .star:hover {

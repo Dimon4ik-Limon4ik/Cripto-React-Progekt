@@ -1,5 +1,19 @@
+/* ☀️ Дневная тема: основной текст по палитре */
 .heroContent {
   text-align: center;
+  color: #1e2229;
+  transition: color 1s ease;
+}
+
+.heroContent h1 {
+  color: #1e2229;
+  transition: color 1s ease;
+}
+
+/* 🌙 Ночная тема: основной текст по палитре */
+.backgroundLayoutDark .heroContent,
+.backgroundLayoutDark .heroContent h1 {
+  color: #f4ebd9;
 }
 
 .Cursor {

@@ -1,4 +1,5 @@
-const API_KEY = "CG-kuBTAsEac9yHn1KpVA58k7VE";
+// Ключ хранится в secrets/.env и загружается через dotenv в server.js.
+const API_KEY = process.env.COINGECKO_API_KEY;
 
 export async function getCrypto () {
   try {

@@ -8,7 +8,8 @@ import favoritesRouter from "./routes/favoritesRouter.js";
 import ensureUsersSchema from "./services/ensureUsersSchema.js";
 import ensureFavoritesSchema from "./services/ensureFavoritesSchema.js";
 
-dotenv.config({ path: fileURLToPath(new URL("./secret.env", import.meta.url)) });
+// Все секреты (ключа API, JWT и БД) хранятся в secrets/.env вне Git.
+dotenv.config({ path: fileURLToPath(new URL("../secrets/.env", import.meta.url)) });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
