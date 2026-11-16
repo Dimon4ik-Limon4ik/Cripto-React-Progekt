@@ -5,7 +5,20 @@ import { createUserViaApi, useToken } from "../support/helpers.mjs";
 // Данные о монетах приходят из тестового бэкенда (12 заглушек stub-coin-*).
 
 test.describe("Маршрутизация", () => {
-  test("GET / перенаправляет на /Home и рисует карточки монет", async ({ page }) => {
+  test("GET / без токена перенаправляет на /authorization", async ({ page }) => {
+    await page.goto("/");
+
+    await expect(page).toHaveURL(/\/authorization$/);
+    await expect(page.locator(".LoginPanel")).toBeVisible();
+  });
+
+  test("GET / с токеном перенаправляет на /Home и рисует карточки монет", async ({
+    page,
+    context,
+  }) => {
+    const { token } = await createUserViaApi();
+    await useToken(context, token);
+
     await page.goto("/");
 
     await expect(page).toHaveURL(/\/Home$/);
@@ -13,7 +26,34 @@ test.describe("Маршрутизация", () => {
     await expect(page.locator(".pageConten .Card")).toHaveCount(12);
   });
 
-  test("неизвестный маршрут перенаправляет на /Home", async ({ page }) => {
+  test("/Home без токена перенаправляет на /authorization", async ({ page }) => {
+    await page.goto("/Home");
+
+    await expect(page).toHaveURL(/\/authorization$/);
+    await expect(page.locator(".LoginPanel")).toBeVisible();
+  });
+
+  test("/coin/:coinId без токена перенаправляет на /authorization", async ({ page }) => {
+    await page.goto("/coin/stub-coin-0");
+
+    await expect(page).toHaveURL(/\/authorization$/);
+    await expect(page.locator(".LoginPanel")).toBeVisible();
+  });
+
+  test("неизвестный маршрут без токена перенаправляет на /authorization", async ({ page }) => {
+    await page.goto("/no-such-page");
+
+    await expect(page).toHaveURL(/\/authorization$/);
+    await expect(page.locator(".LoginPanel")).toBeVisible();
+  });
+
+  test("неизвестный маршрут с токеном перенаправляет на /Home", async ({
+    page,
+    context,
+  }) => {
+    const { token } = await createUserViaApi();
+    await useToken(context, token);
+
     await page.goto("/no-such-page");
 
     await expect(page).toHaveURL(/\/Home$/);

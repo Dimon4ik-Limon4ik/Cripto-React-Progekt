@@ -1,7 +1,23 @@
 import { test, expect } from "../support/fixtures.mjs";
-import { cardByName, gotoHome } from "../support/helpers.mjs";
+import {
+  cardByName,
+  createUserViaApi,
+  gotoHome,
+  useToken,
+} from "../support/helpers.mjs";
 
 test.describe("Главная страница", () => {
+  // Главная открывается только с токеном, поэтому готовим сессию заранее.
+  let session;
+
+  test.beforeAll(async () => {
+    session = await createUserViaApi();
+  });
+
+  test.beforeEach(async ({ context }) => {
+    await useToken(context, session.token);
+  });
+
   test("карточки показывают имя, цену и изменение за 24 часа", async ({ page }) => {
     await gotoHome(page);
 

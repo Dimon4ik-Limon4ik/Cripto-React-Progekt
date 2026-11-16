@@ -20,7 +20,26 @@ function ProtectedRoute({ children }) {
 
   if (isCheckingToken) return null;
 
+  // Нет токена в localStorage — любая страница ведёт на регистрацию, а не на главную.
   return isAuthenticated ? children : <Navigate to="/authorization" replace />;
+}
+
+// Форма входа доступна только без сессии: авторизованного уводим на главную.
+function GuestOnlyRoute() {
+  const { isAuthenticated, isCheckingToken } = useAuth();
+
+  if (isCheckingToken) return null;
+
+  return isAuthenticated ? <Navigate to="/Home" replace /> : <Authorization />;
+}
+
+// Точка входа (`/`) и неизвестные адреса: без токена — регистрация, с токеном — главная.
+function EntryRedirect() {
+  const { isAuthenticated, isCheckingToken } = useAuth();
+
+  if (isCheckingToken) return null;
+
+  return <Navigate to={isAuthenticated ? "/Home" : "/authorization"} replace />;
 }
 
 export default function BackgroundLayout() {
@@ -29,7 +48,6 @@ export default function BackgroundLayout() {
   const [cryptoStatus, setCryptoStatus] = useState("loading");
   const [cryptoReloadKey, setCryptoReloadKey] = useState(0);
   const [theme, setTheme] = useState(true);
-  const { isAuthenticated, isCheckingToken } = useAuth();
   const location = useLocation();
   const isCoinPage = location.pathname.startsWith("/coin/");
   const isFixedPage =
@@ -91,23 +109,23 @@ export default function BackgroundLayout() {
           <NotificationsWrapper />
 
           <Routes>
-            <Route path="/" element={<Navigate to="/Home" replace />} />
+            <Route path="/" element={<EntryRedirect />} />
             <Route
               path="/Home"
               element={
-                <>
+                <ProtectedRoute>
                   <Head />
                   <HomePage status={cryptoStatus} onRetry={reloadCrypto} />
-                </>
+                </ProtectedRoute>
               }
             />
             <Route
               path="/coin/:coinId"
               element={
-                <>
+                <ProtectedRoute>
                   <Head />
                   <CoinPage />
-                </>
+                </ProtectedRoute>
               }
             />
             <Route
@@ -128,17 +146,8 @@ export default function BackgroundLayout() {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/authorization"
-              element={
-                isCheckingToken ? null : isAuthenticated ? (
-                  <Navigate to="/Home" replace />
-                ) : (
-                  <Authorization />
-                )
-              }
-            />
-            <Route path="*" element={<Navigate to="/Home" replace />} />
+            <Route path="/authorization" element={<GuestOnlyRoute />} />
+            <Route path="*" element={<EntryRedirect />} />
           </Routes>
         </div>
       </ThemeContext.Provider>

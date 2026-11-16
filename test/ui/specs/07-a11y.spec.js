@@ -1,5 +1,10 @@
 import { test, expect } from "../support/fixtures.mjs";
-import { cardByName, gotoHome } from "../support/helpers.mjs";
+import {
+  cardByName,
+  createUserViaApi,
+  gotoHome,
+  useToken,
+} from "../support/helpers.mjs";
 
 // Доступность: доступные имена элементов управления и клавиатурная работа.
 // Два первых теста описывают ЖЕЛАЕМОЕ поведение и на текущем коде ПАДАЮТ
@@ -7,6 +12,17 @@ import { cardByName, gotoHome } from "../support/helpers.mjs";
 // доступного имени.
 
 test.describe("Доступность главной страницы", () => {
+  // Главная открывается только с токеном, поэтому готовим сессию заранее.
+  let session;
+
+  test.beforeAll(async () => {
+    session = await createUserViaApi();
+  });
+
+  test.beforeEach(async ({ context }) => {
+    await useToken(context, session.token);
+  });
+
   test("дефект: поле поиска должно иметь доступное имя", async ({ page }) => {
     await gotoHome(page);
 

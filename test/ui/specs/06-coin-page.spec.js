@@ -1,4 +1,5 @@
 import { test, expect } from "../support/fixtures.mjs";
+import { createUserViaApi, useToken } from "../support/helpers.mjs";
 
 // Страница монеты: прямая загрузка, переключение периодов, 6 лет через Binance,
 // неизвестная монета и кнопка «Назад».
@@ -7,6 +8,17 @@ import { test, expect } from "../support/fixtures.mjs";
 const chart = (page) => page.getByRole("img", { name: "График изменения цены" });
 
 test.describe("Страница монеты", () => {
+  // Страница монеты доступна только с токеном: готовим сессию заранее.
+  let session;
+
+  test.beforeAll(async () => {
+    session = await createUserViaApi();
+  });
+
+  test.beforeEach(async ({ context }) => {
+    await useToken(context, session.token);
+  });
+
   test("прямая загрузка по ссылке показывает монету и график", async ({ page }) => {
     await page.goto("/coin/stub-coin-0");
 

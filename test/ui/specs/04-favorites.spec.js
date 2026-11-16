@@ -9,18 +9,15 @@ import {
 // Избранное: звезда на главной, персональный список в портфеле,
 // сохранение в БД и изоляция пользователей.
 
-test.describe("Звезда без авторизации", () => {
-  test("звезда не сохраняется и просит войти", async ({ page }) => {
-    await gotoHome(page);
+test.describe("Главная без авторизации", () => {
+  // Без токена в localStorage главная недоступна: приложение уводит на регистрацию.
+  test("без токена главная перенаправляет на /authorization", async ({ page }) => {
+    await page.goto("/Home");
 
-    const star = cardByName(page, "Stub Coin 1").locator(".star");
-    await star.click();
-
-    await expect(page.locator(".Notifications-info")).toContainText(
-      "Войдите, чтобы сохранять избранные монеты.",
-    );
-    await expect(star).toHaveAttribute("aria-pressed", "false");
-    await expect(page).toHaveURL(/\/Home$/);
+    await expect(page).toHaveURL(/\/authorization$/);
+    await expect(page.locator(".LoginPanel")).toBeVisible();
+    // Звезда избранного без сессии недоступна: карточек на экране нет.
+    await expect(page.locator(".pageConten .Card")).toHaveCount(0);
   });
 });
 

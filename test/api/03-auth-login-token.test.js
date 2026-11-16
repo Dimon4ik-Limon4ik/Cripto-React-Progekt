@@ -17,7 +17,9 @@ describe("POST /auth/login", () => {
     expect(response.body.userId).toBe(userId);
     expect(response.body.token.split(".").length).toBe(3);
 
-    const check = await api().get("/auth/tokenCheck").set(auth(response.body.token));
+    const check = await api()
+      .get("/auth/tokenCheck")
+      .set(auth(response.body.token));
     expect(check.status).toBe(200);
   });
 
@@ -65,7 +67,9 @@ describe("POST /auth/login", () => {
     ];
 
     for (const login of injections) {
-      const response = await api().post("/auth/login").send({ login, password: "x" });
+      const response = await api()
+        .post("/auth/login")
+        .send({ login, password: "x" });
       expect(response.status).toBe(401);
       expect(response.body.token).toBeUndefined();
     }
@@ -74,7 +78,6 @@ describe("POST /auth/login", () => {
     expect(health.status).toBe(200);
   });
 });
-
 
 describe("TokenCheck — защищённые маршруты", () => {
   const protectedRoutes = [
@@ -98,10 +101,18 @@ describe("TokenCheck — защищённые маршруты", () => {
   }
 
   it("401 при некорректном заголовке Authorization", async () => {
-    const headers = ["Basic abc", "Bearer", "Bearer ", "Token abc", "bearer abc"];
+    const headers = [
+      "Basic abc",
+      "Bearer",
+      "Bearer ",
+      "Token abc",
+      "bearer abc",
+    ];
 
     for (const value of headers) {
-      const response = await api().get("/auth/profile").set("Authorization", value);
+      const response = await api()
+        .get("/auth/profile")
+        .set("Authorization", value);
       expect(response.status).toBe(401);
     }
   });
@@ -157,12 +168,16 @@ describe("TokenCheck — защищённые маршруты", () => {
 
   it("401 для токена с alg=none", async () => {
     const { userId } = await createUser();
-    const header = Buffer.from(JSON.stringify({ alg: "none", typ: "JWT" })).toString(
+    const header = Buffer.from(
+      JSON.stringify({ alg: "none", typ: "JWT" }),
+    ).toString("base64url");
+    const payload = Buffer.from(JSON.stringify({ userId })).toString(
       "base64url",
     );
-    const payload = Buffer.from(JSON.stringify({ userId })).toString("base64url");
 
-    const response = await api().get("/auth/profile").set(auth(`${header}.${payload}.`));
+    const response = await api()
+      .get("/auth/profile")
+      .set(auth(`${header}.${payload}.`));
     expect(response.status).toBe(401);
   });
 
